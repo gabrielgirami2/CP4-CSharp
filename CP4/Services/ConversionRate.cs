@@ -13,8 +13,7 @@ namespace CP4.Services
         public ConversionRate(HttpClient httpClient, IOptions<ExchangeRateApiSettings> options)
         {
             _httpClient = httpClient;
-            // Captura a URL da API a partir do appsettings.json
-            _apiUrl = options.Value.BaseUrl;
+            _apiUrl = options.Value.BaseUrl; // Ensure that the URL is correctly configured in appsettings.json
         }
 
         public async Task<ExchangeRateResponse> GetUsdRateAsync()
@@ -23,7 +22,7 @@ namespace CP4.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpRequestException("Falha na chamada à API de câmbio.");
+                throw new HttpRequestException("Failed to call the exchange rate API.");
             }
 
             var options = new JsonSerializerOptions
@@ -36,8 +35,6 @@ namespace CP4.Services
             var obj = JsonSerializer.Deserialize<ExchangeRateResponse>(json, options);
 
             return obj;
-            //return exchangeRateData?.ConversionRates.BRL ?? 0;
         }
     }
 }
-

@@ -10,10 +10,21 @@ namespace CP4
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddHttpClient<>();
+            builder.Services.AddHttpClient<IConversionRate, ConversionRate>(client =>
+            {
+                client.BaseAddress = new Uri("https://api.example.com"); // Replace with your actual API base URL
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+
+            builder.Services.AddHttpClient<IExchangeRateService, ExchangeRateService>(client =>
+            {
+                client.BaseAddress = new Uri("https://v6.exchangerate-api.com"); // Base URL for ExchangeRateService
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+
+            builder.Services.Configure<ExchangeRateApiSettings>(builder.Configuration.GetSection("ExchangeRateApiSettings"));
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -35,10 +46,8 @@ namespace CP4
                     });
             });
 
-
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -56,7 +65,4 @@ namespace CP4
             app.UseRouting();
             app.UseAuthorization();
             app.MapControllers();
-            app.Run();
-        }
-    }
-}
+            a

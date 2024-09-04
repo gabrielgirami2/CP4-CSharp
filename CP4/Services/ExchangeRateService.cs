@@ -1,9 +1,9 @@
 ﻿using CP4.Interfaces;
+using System.Threading.Tasks;
 
 namespace CP4.Services
 {
     public class ExchangeRateService : IExchangeRateService
-
     {
         private readonly IConversionRate _conversionRate;
 
@@ -19,8 +19,3 @@ namespace CP4.Services
         }
     }
 }
-
-
-
-
-
